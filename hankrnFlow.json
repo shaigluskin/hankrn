@@ -1,0 +1,191 @@
+{
+  "description": "Barry the Barista-Bot",
+  "states": [
+    {
+      "name": "Trigger",
+      "type": "InitialState",
+      "properties": {
+        "offset": {
+          "x": 220,
+          "y": -380
+        },
+        "flow_url": "https://webhooks.twilio.com/v1/Accounts/AC67fd961e721e4e2d710dcf834b8e3952/Flows/FW1dc268624c7a7edfa2a80327eb8f999c"
+      },
+      "transitions": [
+        {
+          "event": "incomingMessage",
+          "conditions": [],
+          "next": "FFc5dcca4163be42b292573bde578e2016",
+          "uuid": "9f5116d8-5836-4a14-be58-bc3753b3bcea"
+        },
+        {
+          "event": "incomingCall",
+          "conditions": [],
+          "next": null,
+          "uuid": "1ca0ee84-ae4d-43b2-88f8-f95113f67758"
+        },
+        {
+          "event": "incomingRequest",
+          "conditions": [],
+          "next": null,
+          "uuid": "ddb6a296-bd43-438c-a4b3-14f277bac2c2"
+        }
+      ],
+      "sid": "FF6d076f58b90db3ac24bada504a6f81bd"
+    },
+    {
+      "name": "GetFirst",
+      "type": "MessagePrompt",
+      "properties": {
+        "offset": {
+          "x": -50,
+          "y": -230
+        },
+        "body": "Hello, what you hankr'n?",
+        "from": "{{flow.channel.address}}",
+        "timeout": 300,
+        "save_response_as": null,
+        "media_url": null,
+        "service": null,
+        "channel": null,
+        "attributes": null
+      },
+      "transitions": [
+        {
+          "event": "incomingMessage",
+          "conditions": [],
+          "next": "FF0bc66427561e5e54a67d731a2f45bb39",
+          "uuid": "cd0d21fa-6c0f-4a29-a519-710f5b17f956"
+        },
+        {
+          "event": "timeout",
+          "conditions": [],
+          "next": null,
+          "uuid": "6334c92d-5e67-4aab-b109-ca49e73a517f"
+        },
+        {
+          "event": "deliveryFailure",
+          "conditions": [],
+          "next": null,
+          "uuid": "6466d2b6-4207-4ec8-af1a-360d832eb8e2"
+        }
+      ],
+      "sid": "FFc5dcca4163be42b292573bde578e2016"
+    },
+    {
+      "name": "split_confirm",
+      "type": "Branch",
+      "properties": {
+        "offset": {
+          "x": -700,
+          "y": 250
+        },
+        "input": "{{widgets.send_and_reply_connecting.inbound.Body}}"
+      },
+      "transitions": [
+        {
+          "event": "noMatch",
+          "conditions": [],
+          "next": null,
+          "uuid": "53f9f19c-05cd-448b-b5e2-9b0f713d6cde"
+        },
+        {
+          "event": "match",
+          "conditions": [
+            {
+              "friendly_name": "y, yes",
+              "type": "matches_any_of",
+              "arguments": [
+                "{{widgets.send_and_reply_connecting.inbound.Body}}"
+              ],
+              "value": "y, yes"
+            }
+          ],
+          "next": "FFb437232a17664e54512e42dc79a13255",
+          "uuid": "c8b2d99c-5cb7-468c-9aae-ba58b43a2d91"
+        }
+      ],
+      "sid": "FFe964e4585b4a05529e61dd2fab5c5d12"
+    },
+    {
+      "name": "call_barista",
+      "type": "Dial",
+      "properties": {
+        "offset": {
+          "x": -760,
+          "y": 570
+        },
+        "from": "{{flow.channel.address}}",
+        "to": "{{contact.channel.address}}",
+        "record": false,
+        "timeout": null
+      },
+      "transitions": [
+        {
+          "event": "answered",
+          "conditions": [],
+          "next": null,
+          "uuid": "9625d0b2-1ebf-4f62-8161-a9f2f922157b"
+        },
+        {
+          "event": "answeredByMachine",
+          "conditions": [],
+          "next": null,
+          "uuid": "4585760f-a851-4698-940a-29dcc63ff2fc"
+        },
+        {
+          "event": "busy",
+          "conditions": [],
+          "next": null,
+          "uuid": "2883562a-7c9d-4868-8ef2-5152efc5e83a"
+        },
+        {
+          "event": "noAnswer",
+          "conditions": [],
+          "next": null,
+          "uuid": "5f41a164-6e64-480f-872d-21a68857be6f"
+        },
+        {
+          "event": "failed",
+          "conditions": [],
+          "next": null,
+          "uuid": "061608a9-0403-46af-8757-cc2816016bcb"
+        }
+      ],
+      "sid": "FFb437232a17664e54512e42dc79a13255"
+    },
+    {
+      "name": "function",
+      "type": "Function",
+      "properties": {
+        "offset": {
+          "x": -20,
+          "y": 20
+        },
+        "url": "https://magnolia-kouprey-5686.twil.io/menusms",
+        "timeout": null,
+        "parameters": [
+          {
+            "key": "input",
+            "value": "{{widgets.GetFirst.inbound.Body}}"
+          }
+        ]
+      },
+      "transitions": [
+        {
+          "event": "success",
+          "conditions": [],
+          "next": null,
+          "uuid": "f7519322-524b-4e9c-b11e-d684faa9203e"
+        },
+        {
+          "event": "fail",
+          "conditions": [],
+          "next": null,
+          "uuid": "4ef17bc1-7830-4340-a178-85a3b247c386"
+        }
+      ],
+      "sid": "FF0bc66427561e5e54a67d731a2f45bb39"
+    }
+  ]
+}
