@@ -1,3 +1,6 @@
+The Problem
+Decision fatigue. Having too many choices eats up valuable time.
+
 The Solution
 Allowing people to filter their choices by what they crave in the moment by texting a food.
 
@@ -5,4 +8,3 @@ Send a message,
 receive food options based on input
 Choose food item
 Option to purchase in chat
- 
